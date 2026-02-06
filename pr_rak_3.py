@@ -1,67 +1,64 @@
-class Character():
-    def __init__ (self, name, hp):
-        self.name = name
-        self.hp = hp
-    
+# Завдання 1: Клас Character
+class Character:
+    def __init__(self, name, hp):
+        self.name = name  # Ім'я персонажа
+        self.hp = hp      # Здоров'я персонажа
+
     def attack(self):
-        print(f"{self.name} атакує")
-    
+        """Метод для атаки"""
+        print(f"{self.name} атакує!")
+
     def take_damage(self, damage):
+        """Метод для отримання шкоди"""
         self.hp -= damage
-        print(f"{self.name} отримав {damage}")
-        print(f"залишилося HP: {self.hp}")
+        print(f"{self.name} отримав {damage} шкоди, залишилось HP: {self.hp}")
 
-    def __str__(self):
-        return f"Персонаж: {self.name}, HP: {self.hp}"
-
+# Завдання 2: Клас Player
 class Player(Character):
-    def __init__ (self, name, hp, level):
+    def __init__(self, name, hp, level):
         super().__init__(name, hp)
-        self.level = level
-    
+        self.level = level  # Рівень гравця
+
     def level_up(self):
-        self.level +=1
+        """Підвищення рівня"""
+        self.level += 1
         print(f"{self.name} підвищив рівень до {self.level}")
 
+# Завдання 3: Клас Enemy
 class Enemy(Character):
-    def __init__ (self, name, hp, damage):
-        super().__init__(name,hp)
-        self.damage = damage
-    
-    def attack(self, shock):
-        print (f"{self.name} атакує і завдає {self.damage} шкоди")
-        shock.take_damage(self.damage)
+    def __init__(self, name, hp, damage):
+        super().__init__(name, hp)
+        self.damage = damage  # Шкода ворога
 
-class Item():
-    def __init__ (self, name, item_type):
-        self.name = name
-        self.item_type = item_type
-    
-    def use(self, shock):
-        pass
+    def attack(self):
+        """Атака ворога"""
+        print(f"{self.name} атакує і завдає {self.damage} шкоди!")
 
-class Heal(Item):
-    def __init__(self, name, heal_amount):
-        super().__init__(name, "heal")
-        self.heal_amount = heal_amount
+# Завдання 4: Клас Item
+class Item:
+    def __init__(self, name, item_type):
+        self.name = name          # Назва предмета
+        self.item_type = item_type  # Тип предмета
 
-    def use(self, shock):
-        shock.hp += self.heal_amount
-        print(f"{shock.name} використав {self.name} і відновив {self.heal_amount} HP")
-        print(f"Поточне HP: {shock.hp}")
+    def use(self):
+        """Використання предмета"""
+        print(f"{self.name} використанне!")
 
-player = Player("Селянин", 100, 12)
-enemy = Enemy("Зомби", 50, 20)
+# Завдання 5: Механіка взаємодії
+player = Player("Селянин", 100, 1)
+enemy = Enemy("Зомбі", 50, 15)
 
-heal = Heal("зілля лікування", 30)
+item = Item("Зілля", "зілля")
 
-print(player)
-print(enemy)
-
-heal.use(player)
-enemy.attack(player)
+print("\n--- Початок гри ---\n")
 
 player.attack()
+enemy.take_damage(20)
 
-print(player)
-print(enemy)
+enemy.attack()
+player.take_damage(enemy.damage)
+
+item.use()
+
+player.level_up()
+print("\n--- Кінець гри ---")
