@@ -11,7 +11,14 @@ class Character:
     def take_damage(self, damage):
         """Метод для отримання шкоди"""
         self.hp -= damage
+        if self.hp < 0:
+            self.hp = 0
         print(f"{self.name} отримав {damage} шкоди, залишилось HP: {self.hp}")
+
+    def is_alive(self):
+        """Перевірка, чи персонаж живий"""
+        return self.hp > 0
+
 
 # Завдання 2: Клас Player
 class Player(Character):
@@ -24,6 +31,7 @@ class Player(Character):
         self.level += 1
         print(f"{self.name} підвищив рівень до {self.level}")
 
+
 # Завдання 3: Клас Enemy
 class Enemy(Character):
     def __init__(self, name, hp, damage):
@@ -34,31 +42,57 @@ class Enemy(Character):
         """Атака ворога"""
         print(f"{self.name} атакує і завдає {self.damage} шкоди!")
 
+
 # Завдання 4: Клас Item
 class Item:
     def __init__(self, name, item_type):
-        self.name = name          # Назва предмета
-        self.item_type = item_type  # Тип предмета
+        self.name = name           # Назва предмета
+        self.item_type = item_type # Тип предмета
 
     def use(self):
         """Використання предмета"""
-        print(f"{self.name} використанне!")
+        print(f"{self.name} використано!")
+
 
 # Завдання 5: Механіка взаємодії
 player = Player("Селянин", 100, 1)
 enemy = Enemy("Зомбі", 50, 15)
-
 item = Item("Зілля", "зілля")
 
-print("\n--- Початок гри ---\n")
+while True:
+    print("\n1 - Атакувати")
+    print("2 - Використати предмет")
+    print("3 - Підвищити рівень")
+    print("0 - Вийти")
 
-player.attack()
-enemy.take_damage(20)
+    choice = input("Виберіть дію: ")
 
-enemy.attack()
-player.take_damage(enemy.damage)
+    if choice == "1":
+        player.attack()
+        enemy.take_damage(10)
 
-item.use()
+        # Якщо ворог помер — гра завершується
+        if not enemy.is_alive():
+            print("Ви перемогли ворога!")
+            break
 
-player.level_up()
-print("\n--- Кінець гри ---")
+        enemy.attack()
+        player.take_damage(enemy.damage)
+
+        # Якщо гравець помер — гра завершується
+        if not player.is_alive():
+            print("Ви програли!")
+            break
+
+    elif choice == "2":
+        item.use()
+
+    elif choice == "3":
+        player.level_up()
+
+    elif choice == "0":
+        print("Кінець гри")
+        break
+
+    else:
+        print("Невірний вибір")
