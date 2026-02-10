@@ -1,47 +1,56 @@
-inventory = {"зілля": 2, "меч": 1}
+import logging
 
-store = {"меч": 60, "щит": 70, "зілля": 15, "броня": 100}
-
+# ---------------- ЛОГУВАННЯ ----------------
+logging.basicConfig(
+    filename="shop.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+# ---------------- ДАНІ ----------------
+inventory = {"зілля": 2, "ключ": 1}
+store = {"меч": 50, "щит": 40, "зілля": 10, "амулет": 30}
 balance = int(input("Введіть ваш баланс: "))
-# Перегляд інвентарю
+
+# ---------------- ФУНКЦІЇ ----------------
 def view_inventory(inventory):
-    print("Ваш інвентар:")
+    print("\n Ваш інвентар:")
     if not inventory:
         print("Інвентар порожній")
     else:
         for item, count in inventory.items():
-            print(f"{item} x{count}")
+            print(f"- {item}: {count} шт.")
+
 
 def view_store(store):
-    print("Магазин:")
+    print("\n Магазин:")
     for item, price in store.items():
-        print(f"{item} - {price} монет")
+        print(f"- {item}: {price} монет")
 
 
 def buy_item(item_name, inventory, store, balance):
-    # 1. Перевірка наявності предмета
     if item_name not in store:
+        logging.error(f"Спроба купити неіснуючий предмет: {item_name}")
         raise ValueError("Такого предмета немає в магазині")
 
     price = store[item_name]
 
-    # 2. Перевірка балансу
     if balance < price:
+        logging.error(
+            f"Недостатньо монет для покупки {item_name}. Баланс: {balance}, ціна: {price}"
+        )
         raise ValueError("Недостатньо монет для покупки")
 
-    # 3. Додавання предмета в інвентар
-    if item_name in inventory:
-        inventory[item_name] += 1
-    else:
-        inventory[item_name] = 1
-
+    # покупка
     balance -= price
-    print(f"Ви купили {item_name} за {price} монет")
+    inventory[item_name] = inventory.get(item_name, 0) + 1
 
+    logging.info(f"Куплено предмет: {item_name} за {price} монет")
     return balance
 
+
+# ---------------- ОСНОВНА ПРОГРАМА ----------------
 while True:
-    print("\n=== МЕНЮ ===")
+    print("\n--- МЕНЮ ---")
     print("1 - Переглянути інвентар")
     print("2 - Переглянути магазин")
     print("3 - Купити предмет")
@@ -60,6 +69,7 @@ while True:
         item = input("Введіть назву предмета: ")
         try:
             balance = buy_item(item, inventory, store, balance)
+            print(f"Предмет '{item}' успішно куплено!")
         except ValueError as e:
             print(f"Помилка: {e}")
 
@@ -67,8 +77,8 @@ while True:
         print(f"Ваш баланс: {balance} монет")
 
     elif choice == "0":
-        print("До побачення!")
+        print("Вихід з програми")
         break
 
     else:
-        print("Невірний вибір!")
+        print("Невірний вибір")
