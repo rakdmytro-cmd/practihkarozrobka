@@ -21,13 +21,13 @@ def view_store(store):
 def buy_item(item_name, inventory, store, balance):
     # Перевірка наявності предмета в магазині
     if item_name not in store:
-        raise ValueError("Такого предмета немає в магазині.")
+        raise ValueError("Такого предмета немає в магазині")
 
     price = store[item_name]
 
     # Перевірка достатності балансу
     if balance < price:
-        raise ValueError("Недостатньо монет для покупки.")
+        raise ValueError("Недостатньо монет для покупки")
 
     # Покупка
     balance -= price
@@ -64,8 +64,8 @@ while True:
         print(f"Ваш баланс: {balance} монет")
 
     elif choice == "0":
-        print("Вихід з програми.")
+        print("Вихід з програми")
         break
 
     else:
-        print("Невірний вибір. Спробуйте ще раз.")
+        print("Невірний вибір. Спробуйте ще раз")
