@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(BASE_DIR, "assets")
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Platformer State Machine")
+pygame.display.set_caption("Platformer")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 30)
 

@@ -27,12 +27,13 @@ class Player:
         ]
 
         run_frames = [
-            pygame.image.load(os.path.join(ASSETS, "run_0.png")).convert_alpha(),
-            pygame.image.load(os.path.join(ASSETS, "run_1.png")).convert_alpha()
+            pygame.image.load(os.path.join(ASSETS, "run_01.png")).convert_alpha(),
+            pygame.image.load(os.path.join(ASSETS, "run_11.png")).convert_alpha()
         ]
 
         jump_frames = [
-            pygame.image.load(os.path.join(ASSETS, "jump_0.png")).convert_alpha()
+            pygame.image.load(os.path.join(ASSETS, "jump_0.png")).convert_alpha(),
+            pygame.image.load(os.path.join(ASSETS, "jump_1.png")).convert_alpha()
         ]
 
         self.animations = {
