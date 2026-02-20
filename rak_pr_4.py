@@ -1,53 +1,39 @@
-import logging
-
-# ---------------- ЛОГУВАННЯ ----------------
-logging.basicConfig(
-    filename="shop.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
-# ---------------- ДАНІ ----------------
-inventory = {"зілля": 2, "ключ": 1}
-store = {"меч": 50, "щит": 40, "зілля": 10, "амулет": 30}
+# Інвентар користувача (назва: кількість)
+inventory = {"зілля": 2, "амулет": 1}
+# Магазин (назва: ціна)
+store = {"меч": 50, "щит": 40, "зілля": 10, "амулет": 30 }
+# Введення балансу
 balance = int(input("Введіть ваш баланс: "))
-
 # ---------------- ФУНКЦІЇ ----------------
 def view_inventory(inventory):
-    print("\n Ваш інвентар:")
+    print("\n--- ВАШ ІНВЕНТАР ---")
     if not inventory:
-        print("Інвентар порожній")
+        print("Інвентар порожній.")
     else:
         for item, count in inventory.items():
-            print(f"- {item}: {count} шт.")
-
+            print(f"{item}: {count} шт.")
 
 def view_store(store):
-    print("\n Магазин:")
+    print("\n--- МАГАЗИН ---")
     for item, price in store.items():
-        print(f"- {item}: {price} монет")
-
+        print(f"{item}: {price} монет")
 
 def buy_item(item_name, inventory, store, balance):
+    # Перевірка наявності предмета в магазині
     if item_name not in store:
-        logging.error(f"Спроба купити неіснуючий предмет: {item_name}")
         raise ValueError("Такого предмета немає в магазині")
 
     price = store[item_name]
 
+    # Перевірка достатності балансу
     if balance < price:
-        logging.error(
-            f"Недостатньо монет для покупки {item_name}. Баланс: {balance}, ціна: {price}"
-        )
         raise ValueError("Недостатньо монет для покупки")
 
-    # покупка
+    # Покупка
     balance -= price
     inventory[item_name] = inventory.get(item_name, 0) + 1
 
-    logging.info(f"Куплено предмет: {item_name} за {price} монет")
     return balance
-
-
 # ---------------- ОСНОВНА ПРОГРАМА ----------------
 while True:
     print("\n--- МЕНЮ ---")
@@ -67,6 +53,7 @@ while True:
 
     elif choice == "3":
         item = input("Введіть назву предмета: ")
+
         try:
             balance = buy_item(item, inventory, store, balance)
             print(f"Предмет '{item}' успішно куплено!")
@@ -81,4 +68,4 @@ while True:
         break
 
     else:
-        print("Невірний вибір")
+        print("Невірний вибір. Спробуйте ще раз")
